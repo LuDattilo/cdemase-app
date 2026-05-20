@@ -53,6 +53,15 @@ const IT: Record<string, string> = {
   "catalog.remove": "Rimuovi",
   "catalog.confirm": "Conferma",
   "catalog.confirmHint": "Click di nuovo per confermare",
+  "catalog.select": "Seleziona",
+  "catalog.select.cancel": "Annulla",
+  "catalog.select.all": "Tutti",
+  "catalog.select.none": "Nessuno",
+  "catalog.select.count": "selezionati",
+  "catalog.select.delete": "Elimina selezionati",
+  "catalog.select.confirmDelete": "Conferma eliminazione",
+  "catalog.hidden.restore": "Ripristina nascosti",
+  "catalog.hidden.count": "nascosti",
 
   // Generator
   "generator.title": "Composizione codice — 7 campi",
@@ -220,6 +229,15 @@ const EN: Record<string, string> = {
   "catalog.remove": "Remove",
   "catalog.confirm": "Confirm",
   "catalog.confirmHint": "Click again to confirm",
+  "catalog.select": "Select",
+  "catalog.select.cancel": "Cancel",
+  "catalog.select.all": "All",
+  "catalog.select.none": "None",
+  "catalog.select.count": "selected",
+  "catalog.select.delete": "Delete selected",
+  "catalog.select.confirmDelete": "Confirm deletion",
+  "catalog.hidden.restore": "Restore hidden",
+  "catalog.hidden.count": "hidden",
 
   // Generator
   "generator.title": "Code composition — 7 fields",

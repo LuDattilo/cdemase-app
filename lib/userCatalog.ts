@@ -86,6 +86,22 @@ export function removeFromUserCatalog(codice: string): boolean {
   return true;
 }
 
+/**
+ * Rimuove più voci dal catalogo personale in un'unica operazione (una sola write + una sola notifica).
+ * Restituisce il numero di voci effettivamente rimosse.
+ */
+export function removeManyFromUserCatalog(codici: string[]): number {
+  if (typeof window === "undefined" || codici.length === 0) return 0;
+  const normalized = new Set(codici.map((c) => c.trim().toUpperCase()));
+  const current = getUserCatalog();
+  const next = current.filter((e) => !normalized.has(e.codice.toUpperCase()));
+  const removed = current.length - next.length;
+  if (removed === 0) return 0;
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+  notifyChange();
+  return removed;
+}
+
 /** Pulisce tutto il catalogo personale. */
 export function clearUserCatalog(): void {
   if (typeof window === "undefined") return;
@@ -102,6 +118,43 @@ export function getUserCatalogCount(): number {
 export function exportUserCatalogAsJSON(): string {
   return JSON.stringify(getUserCatalog(), null, 2);
 }
+
+// ─── Codici nascosti (entry ufficiali che l'utente vuole escludere dalla vista) ───
+
+const HIDDEN_KEY = "mase-hidden-codes-v1";
+
+export function getHiddenCodes(): Set<string> {
+  if (typeof window === "undefined") return new Set();
+  try {
+    const raw = window.localStorage.getItem(HIDDEN_KEY);
+    if (!raw) return new Set();
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return new Set();
+    return new Set(parsed.map((c: unknown) => String(c).toUpperCase()));
+  } catch {
+    return new Set();
+  }
+}
+
+export function hideCodes(codici: string[]): void {
+  if (typeof window === "undefined" || codici.length === 0) return;
+  const current = getHiddenCodes();
+  codici.forEach((c) => current.add(c.trim().toUpperCase()));
+  window.localStorage.setItem(HIDDEN_KEY, JSON.stringify(Array.from(current)));
+  notifyChange();
+}
+
+export function restoreHiddenCodes(): void {
+  if (typeof window === "undefined") return;
+  window.localStorage.removeItem(HIDDEN_KEY);
+  notifyChange();
+}
+
+export function getHiddenCount(): number {
+  return getHiddenCodes().size;
+}
+
+// ─── Evento custom: emesso quando il catalogo cambia (add/remove/clear) ───
 
 /**
  * Evento custom: emesso quando il catalogo cambia (add/remove/clear).
