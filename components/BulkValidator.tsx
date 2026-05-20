@@ -39,7 +39,7 @@ type SummaryStats = {
 
 /**
  * Rimuove l'estensione e il path dal nome file.
- * Es. "docs/RMB1284-ADD-RELGENERA-XX-RT-Z-PD00001.pdf" -> "RMB1284-ADD-RELGENERA-XX-RT-Z-PD00001"
+ * Es. "docs/RMB1284-ADD-RELGENERA-XX-RT-Z-PD0001.pdf" -> "RMB1284-ADD-RELGENERA-XX-RT-Z-PD0001"
  */
 function extractCodeFromFilename(fullName: string): string {
   // Rimuovi il path (gestisce sia / che \)

@@ -18,48 +18,47 @@ const FOLDER_DIR = join(__dirname, "folder-cartella");
 // === Casi di test (categorie esplicite per ricostruire risultati attesi) ===
 const TEST_CASES = [
   // OK e in catalogo ufficiale
-  { code: "RMB1284-ADD-ELENCELAB-XX-AM-Z-PD00001", desc: "ELENCO ELABORATI", expected: "ok" },
-  { code: "RMB1284-ADD-RELGENERA-XX-RT-Z-PD00001", desc: "RELAZIONE GENERALE", expected: "ok" },
-  { code: "RMB1284-ADD-PLANLIVEL-GF-DR-A-PD00001", desc: "Rilievo Piano terra", expected: "ok" },
-  { code: "RMB1284-ADD-PLANLIVEL-G1-DR-D-PD00001", desc: "Demolizione selettiva Piano G1", expected: "ok" },
-  { code: "RMB1284-ADD-PIASICCOO-XX-HS-D-PD00001", desc: "PSC", expected: "ok" },
-  { code: "RMB1284-ADD-RELTECNIC-XX-RT-M-PD00005", desc: "Report di coordinamento (R1 update)", expected: "ok" },
+  { code: "RMB1284-ADD-ELENCELAB-XX-AM-Z-PD0001", desc: "ELENCO ELABORATI", expected: "ok" },
+  { code: "RMB1284-ADD-RELGENERA-XX-RT-Z-PD0001", desc: "RELAZIONE GENERALE", expected: "ok" },
+  { code: "RMB1284-ADD-PLANLIVEL-GF-DR-A-PD0001", desc: "Rilievo Piano terra", expected: "ok" },
+  { code: "RMB1284-ADD-PLANLIVEL-G1-DR-D-PD0001", desc: "Demolizione selettiva Piano G1", expected: "ok" },
+  { code: "RMB1284-ADD-PIASICCOO-XX-HS-D-PD0001", desc: "PSC", expected: "ok" },
+  { code: "RMB1284-ADD-RELTECNIC-XX-RT-M-PD0005", desc: "Report di coordinamento (R1 update)", expected: "ok" },
   { code: "RMB1284-ADD-SPECIFCSP-XX-SM-Z-C00001", desc: "Capitolato Informativo CSP", expected: "ok" },
   { code: "RMB1284-ADD-SPECIFRIL-XX-SM-Z-S00001", desc: "Specifica Metodologica Rilievi", expected: "ok" },
   { code: "RMB1284-ADD-SPECIFPRO-XX-SM-Z-P00001", desc: "Specifica Metodologica Progettazione", expected: "ok" },
 
   // OK formalmente, ma fuori catalogo (warning sul fuori-catalogo, campi OK)
-  // Nota: uso formato 6-char (senza Stato) per evitare combinazioni Servizio+Stato non valide
   { code: "RMB1284-ADD-PLANLIVEL-04-DR-A-E00099", desc: "Piano 4 in fase Esecutivo (formato 6-char)", expected: "out-of-catalog" },
-  { code: "RMB1284-ADD-RELTECNIC-XX-RT-A-AN00099", desc: "Relazione As Built + Nuove costruzioni (composito)", expected: "out-of-catalog" },
+  { code: "RMB1284-ADD-RELTECNIC-XX-RT-A-AN0099", desc: "Relazione As Built + Nuove costruzioni (composito)", expected: "out-of-catalog" },
 
   // WARNING — coerenza SPECIF*/servizio
   { code: "RMB1284-ADD-SPECIFCSP-XX-SM-Z-P00001", desc: "SPECIFCSP con servizio P invece di C", expected: "warning" },
   { code: "RMB1284-ADD-SPECIFRIL-XX-SM-Z-C00001", desc: "SPECIFRIL con servizio C invece di S", expected: "warning" },
 
   // WARNING — Codice Agenzia legacy ADM
-  { code: "RMB1284-ADM-RM0411001-XX-RT-Z-PD00001", desc: "Codice Agenzia legacy ADM (Vulnerabilità Sismica)", expected: "warning" },
+  { code: "RMB1284-ADM-RM0411001-XX-RT-Z-PD0001", desc: "Codice Agenzia legacy ADM (Vulnerabilità Sismica)", expected: "warning" },
 
   // WARNING — codice documento valido ma non in tabella ufficiale
-  { code: "RMB1284-ADD-PIPPOXXXX-XX-RT-Z-PD00001", desc: "Codice documento sconosciuto 9 char", expected: "warning" },
+  { code: "RMB1284-ADD-PIPPOXXXX-XX-RT-Z-PD0001", desc: "Codice documento sconosciuto 9 char", expected: "warning" },
 
   // WARNING — tipo file non coerente col Codice Documento
-  { code: "RMB1284-ADD-PLANGENER-XX-RT-Z-PD00001", desc: "PLANGENER (DR atteso) con RT", expected: "warning" },
+  { code: "RMB1284-ADD-PLANGENER-XX-RT-Z-PD0001", desc: "PLANGENER (DR atteso) con RT", expected: "warning" },
 
-  // WARNING — fase != 0
-  { code: "RMB1284-ADD-ELENCELAB-XX-AM-Z-PD10001", desc: "Fase 1 (di norma 0)", expected: "warning" },
+  // WARNING — Stato/Fase non riconosciuto
+  { code: "RMB1284-ADD-ELENCELAB-XX-AM-Z-P90001", desc: "Stato/Fase 9 non riconosciuto", expected: "warning" },
 
   // ERRORE — numero campi sbagliato (6 invece di 7)
   { code: "RMB1284-ADD-RELGENERA-XX-RT-Z", desc: "Campo 7 mancante", expected: "error" },
 
   // ERRORE — Codice Bene fuori formato
-  { code: "RMB-ADD-RELGENERA-XX-RT-Z-PD00001", desc: "Codice Bene troppo corto", expected: "error" },
+  { code: "RMB-ADD-RELGENERA-XX-RT-Z-PD0001", desc: "Codice Bene troppo corto", expected: "error" },
 
   // ERRORE — Codice Documento di 10 caratteri
-  { code: "RMB1284-ADD-ELEVAZIONI-XX-RT-Z-PD00001", desc: "ELEVAZIONI (10 char) — bug della v0 ora corretto", expected: "error" },
+  { code: "RMB1284-ADD-ELEVAZIONI-XX-RT-Z-PD0001", desc: "ELEVAZIONI (10 char) — bug della v0 ora corretto", expected: "error" },
 
   // ERRORE — Disciplina non riconosciuta (cifra invece di lettera)
-  { code: "RMB1284-ADD-RELGENERA-XX-RT-9-PD00001", desc: "Disciplina cifra", expected: "error" },
+  { code: "RMB1284-ADD-RELGENERA-XX-RT-9-PD0001", desc: "Disciplina cifra", expected: "error" },
 
   // ERRORE — Codice elaborato non valido (lettera in posizione cifra)
   { code: "RMB1284-ADD-RELGENERA-XX-RT-Z-PDX0001", desc: "Codice elaborato malformato (lettera in posizione cifra)", expected: "error" },
@@ -68,18 +67,18 @@ const TEST_CASES = [
   { code: "RMB1284-ADD-RELGENERA-XX-RT-Z-PD001", desc: "Codice elaborato troppo corto", expected: "error" },
 
   // ERRORE — Livello non noto
-  { code: "RMB1284-ADD-RELGENERA-99-RT-Z-PD00001", desc: "Livello 99 non in tabella", expected: "warning" }, // formato OK, ma non in tab
+  { code: "RMB1284-ADD-RELGENERA-99-RT-Z-PD0001", desc: "Livello 99 non in tabella", expected: "warning" }, // formato OK, ma non in tab
 
   // ERRORE — progressivo 00 (deve partire da 01)
-  { code: "RMB1284-ADD-ELENCELAB-XX-AM-Z-PD00000", desc: "Progressivo 00", expected: "warning" },
+  { code: "RMB1284-ADD-ELENCELAB-XX-AM-Z-PD0000", desc: "Progressivo 00", expected: "warning" },
 
   // EDGE — input con spazi embedded (deve essere ripulito → match catalogo)
-  { code: "RMB1284 -ADD-ELENCELAB-XX-AM-Z-PD00001", desc: "Spazi embedded (dovrebbero essere normalizzati)", expected: "ok" },
-  { code: " RMB1284-ADD-RELGENERA-XX-RT-Z-PD00001 ", desc: "Spazi leading/trailing", expected: "ok" },
-  { code: "rmb1284-add-relgenera-xx-rt-z-pd00001", desc: "Lowercase (deve essere uppercased)", expected: "ok" },
+  { code: "RMB1284 -ADD-ELENCELAB-XX-AM-Z-PD0001", desc: "Spazi embedded (dovrebbero essere normalizzati)", expected: "ok" },
+  { code: " RMB1284-ADD-RELGENERA-XX-RT-Z-PD0001 ", desc: "Spazi leading/trailing", expected: "ok" },
+  { code: "rmb1284-add-relgenera-xx-rt-z-pd0001", desc: "Lowercase (deve essere uppercased)", expected: "ok" },
 
   // EDGE — 8 trattini (parti extra)
-  { code: "RMB1284-ADD-ELENCELAB-XX-AM-Z-PD00001-EXTRA", desc: "8 parti invece di 7", expected: "error" },
+  { code: "RMB1284-ADD-ELENCELAB-XX-AM-Z-PD0001-EXTRA", desc: "8 parti invece di 7", expected: "error" },
 ];
 
 console.log(`Generating ${TEST_CASES.length} test cases...`);

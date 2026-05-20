@@ -13,7 +13,7 @@ import {
   TIPI_FILE,
   DISCIPLINE,
   SERVIZI,
-  STATI,
+  STATI_FASI,
   SEPARATORE,
   CODICE_BENE_DEFAULT,
   CODICE_AGENZIA_DEFAULT,
@@ -52,23 +52,20 @@ export type CodificaInput = {
   tipoFile: string;
   disciplina: string;
   servizio: string;
-  /** Stato del progetto (opzionale — se presente, il Campo 7 sarà 7 char invece di 6) */
-  stato: string;
-  cifraFase: string;
+  /** Secondo carattere del Campo 7: stato oppure fase 0. */
+  statoFase: string;
   bloccoFunzionale: string;
   progressivo: string;
 };
 
 /**
  * Componi una stringa nominale a partire dai singoli campi.
- * Se lo stato è valorizzato, il Campo 7 sarà 7 char (Serv+Stato+Fase+BF+Progr).
- * Altrimenti sarà 6 char (Serv+Fase+BF+Progr) — formato dei Capitolati Informativi.
+ * Il Campo 7 è sempre 6 char: Servizio + Stato/Fase + BF + Progressivo.
  */
 export function componiCodice(input: CodificaInput): string {
   const campo7 =
     input.servizio +
-    (input.stato || "") +
-    input.cifraFase +
+    input.statoFase +
     input.bloccoFunzionale +
     input.progressivo;
   return [
@@ -369,22 +366,16 @@ function validateCampo7(v: string): FieldResult {
       valore: value,
       status: "error",
       messaggio:
-        "Formato non valido. Atteso: 6 char (es. C00001) o 7 char con Stato (es. PD00001).",
+        "Formato non valido. Atteso sempre 6 char (es. C00001, PD0001, PS0001).",
       suggerimento:
-        "Schema: <Servizio>[<Stato>]<Fase><BloccoFunzionale 2c><Progressivo 2c>",
+        "Schema: <Servizio><Stato/Fase><BloccoFunzionale 2c><Progressivo 2c>",
     };
   }
 
-  // Decomposizione: il numero di lettere iniziali determina il formato
-  // 7 char: prime 2 sono lettere → Servizio + Stato
-  // 6 char: prima 1 è lettera → solo Servizio
-  const has7Format = value.length === 7;
   const servizio = value.charAt(0);
-  const stato = has7Format ? value.charAt(1) : "";
-  const faseIdx = has7Format ? 2 : 1;
-  const fase = value.charAt(faseIdx);
-  const bloccoFunz = value.substring(faseIdx + 1, faseIdx + 3);
-  const progressivo = value.substring(faseIdx + 3, faseIdx + 5);
+  const statoFase = value.charAt(1);
+  const bloccoFunz = value.substring(2, 4);
+  const progressivo = value.substring(4, 6);
 
   const servEntry = SERVIZI.find((s) => s.code === servizio);
   if (!servEntry) {
@@ -397,29 +388,14 @@ function validateCampo7(v: string): FieldResult {
     };
   }
 
-  // Lo stato (se presente) deve essere un codice valido
-  let statoDescr = "";
-  if (stato) {
-    const statoEntry = STATI.find((s) => s.code === stato);
-    if (!statoEntry) {
-      return {
-        campo: 7,
-        nome: "Codice Elaborato",
-        valore: value,
-        status: "warning",
-        messaggio: `Servizio "${servEntry.description}" + Stato "${stato}" non riconosciuto (Tab. 16).`,
-      };
-    }
-    statoDescr = ` + ${statoEntry.description}`;
-  }
-
-  if (fase !== "0") {
+  const statoFaseEntry = STATI_FASI.find((s) => s.code === statoFase);
+  if (!statoFaseEntry) {
     return {
       campo: 7,
       nome: "Codice Elaborato",
       valore: value,
       status: "warning",
-      messaggio: `${servEntry.description}${statoDescr}. Fase "${fase}" — di norma deve essere 0.`,
+      messaggio: `Servizio "${servEntry.description}" + Stato/Fase "${statoFase}" non riconosciuto (Tab. 16).`,
     };
   }
   if (progressivo === "00") {
@@ -428,7 +404,7 @@ function validateCampo7(v: string): FieldResult {
       nome: "Codice Elaborato",
       valore: value,
       status: "warning",
-      messaggio: `${servEntry.description}${statoDescr}. Progressivo 00 non valido — deve partire da 01.`,
+      messaggio: `${servEntry.description} + ${statoFaseEntry.description}. Progressivo 00 non valido — deve partire da 01.`,
     };
   }
   return {
@@ -436,7 +412,7 @@ function validateCampo7(v: string): FieldResult {
     nome: "Codice Elaborato",
     valore: value,
     status: "ok",
-    messaggio: `${servEntry.description}${statoDescr} | Blocco Funz: ${bloccoFunz} | Progressivo: ${progressivo}`,
+    messaggio: `${servEntry.description} + ${statoFaseEntry.description} | Blocco Funz: ${bloccoFunz} | Progressivo: ${progressivo}`,
   };
 }
 
@@ -507,7 +483,6 @@ export function validaCodiceCompleto(input: string): ValidationResult {
 
   // Cross-check 2: i Capitolati Informativi SPECIF* hanno il servizio del Campo 7 vincolato.
   // SPECIFCSP → servizio C, SPECIFRIL → S, SPECIFPRO → P
-  // I Capitolati Informativi usano il formato 6 char (no stato).
   const codDoc = parts[2].toUpperCase();
   const specifMap: Record<string, string> = {
     SPECIFCSP: "C",
@@ -523,14 +498,6 @@ export function validaCodiceCompleto(input: string): ValidationResult {
         status: "warning",
         messaggio: `${results[6].messaggio} — Per "${codDoc}" il servizio del Campo 7 deve iniziare con "${servizioAtteso}" (trovato "${servizioTrovato}").`,
         suggerimento: `Es. corretto: ${codDoc.startsWith("SPECIFC") ? "C00001" : codDoc.startsWith("SPECIFR") ? "S00001" : "P00001"}`,
-      };
-    }
-    // I capitolati informativi devono usare il formato 6 char (no stato).
-    if (results[6].valore.length === 7) {
-      results[6] = {
-        ...results[6],
-        status: "warning",
-        messaggio: `${results[6].messaggio} — Per "${codDoc}" il Campo 7 dovrebbe essere a 6 caratteri (senza stato), non 7.`,
       };
     }
   }

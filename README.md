@@ -15,7 +15,7 @@ secondo la naming convention BIMMS — Allegato H, Tabelle 13–16.
   Cross-lookup automatico nel Catalogo: se il codice è ufficiale viene mostrata
   la descrizione approvata; altrimenti l'app segnala "verifica con SA".
 - **Riferimenti** — consulta tutte le tabelle ufficiali (Codici Documento, Livelli,
-  Tipi File, Discipline, Servizi/Stati) con ricerca incrementale.
+  Tipi File, Discipline, Servizi e Stato/Fase) con ricerca incrementale.
 - **Embed in SharePoint** — header CSP `frame-ancestors` già configurati per
   `*.sharepoint.com`, `*.office.com`, `*.microsoft.com`.
 
@@ -26,8 +26,8 @@ secondo la naming convention BIMMS — Allegato H, Tabelle 13–16.
    C1         C2             C3           C4        C5          C6           C7
 ```
 
-Esempio: `RMB1284-ADD-PLANLIVEL-GF-DR-A-PD00001` → Pianta Piano Terra,
-Architettonica, PFTE Progressivo 01.
+Esempio: `RMB1284-ADD-PLANLIVEL-GF-DR-A-PD0001` → Pianta Piano Terra,
+Architettonica, PFTE + Demolizioni, Blocco Funzionale 00, Progressivo 01.
 
 | Campo | Descrizione                              | Formato                        |
 |-------|------------------------------------------|--------------------------------|
@@ -37,7 +37,7 @@ Architettonica, PFTE Progressivo 01.
 | C4    | Livello modello                          | 2 alfanumerici (Tab. 13)       |
 | C5    | Tipo file                                | 2 caratteri (Tab. 14)          |
 | C6    | Disciplina                               | 1 lettera (Tab. 15)            |
-| C7    | Servizio + Fase + Blocco Funz + Progress.| `<L><N><NN><NN>` (Tab. 16)     |
+| C7    | Servizio + Stato/Fase + Blocco Funz + Progress. | `<L><L/N><NN><NN>` (Tab. 16) |
 
 ## Setup locale
 
@@ -108,7 +108,7 @@ Security.
 
 Tutte le tabelle vivono in **`lib/codifica-data.ts`**. Per aggiungere/modificare
 codici, basta editare gli array `CODICI_DOCUMENTO`, `LIVELLI`, `TIPI_FILE`,
-`DISCIPLINE`, `SERVIZI`, `STATI`.
+`DISCIPLINE`, `SERVIZI`, `STATI_FASI`.
 
 Il validatore in `lib/validator.ts` usa direttamente questi array, quindi
 qualsiasi modifica si riflette immediatamente sia nel Generator che nel Validator.
@@ -137,7 +137,7 @@ risolto in base al PDF). L'app codifica le regole con questa gerarchia.
 | Livelli modello (Tab. 13) | BIMMS | `LIVELLI` |
 | Tipi File (Tab. 14) | BIMMS | `TIPI_FILE` |
 | Discipline (Tab. 15) | BIMMS | `DISCIPLINE` |
-| Servizi/Stati (Tab. 16) | BIMMS | `SERVIZI`, `STATI` |
+| Servizi e Stato/Fase (Tab. 16) | BIMMS | `SERVIZI`, `STATI_FASI` |
 | Coerenza SPECIF*↔ Servizio Campo 7 | PDF (riga 581-583) | regola in `validator.ts` |
 | Codice agenzia legacy "ADM" | PDF (Tab. 5) | warning in `validator.ts` |
 
@@ -147,7 +147,7 @@ risolto in base al PDF). L'app codifica le regole con questa gerarchia.
   riferiti a porzioni di territorio esterne al perimetro del Bene (BIMMS §4.1.1.2).
 - I file con Codice Agenzia **`ADM`** provengono da servizi precedenti del Demanio
   (Vulnerabilità Sismica) e usano un formato di codifica legacy del Campo 7
-  (es. `0ZZ010` invece di `PD00001`). Il validator emette un warning.
+  (es. `0ZZ010` invece di `PD0001`). Il validator emette un warning.
 - Esistono **3 Capitolati Informativi paralleli** per il MASE: CSP, RIL (Rilievi),
   PRO (Progettazione). La prima lettera del Servizio nel Campo 7 deve corrispondere:
   `SPECIFCSP→C`, `SPECIFRIL→S`, `SPECIFPRO→P`. Il validator verifica questa coerenza.

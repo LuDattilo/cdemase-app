@@ -8,7 +8,7 @@ import {
   TIPI_FILE,
   DISCIPLINE,
   SERVIZI,
-  STATI,
+  STATI_FASI,
 } from "@/lib/codifica-data";
 import { Card, Input, Badge } from "./ui-primitives";
 import { useAppState } from "@/lib/useAppState";
@@ -25,7 +25,7 @@ export function Reference() {
     { key: "livelli", label: t("reference.tab.livelli"), count: LIVELLI.length },
     { key: "tipi", label: t("reference.tab.tipi"), count: TIPI_FILE.length },
     { key: "discipline", label: t("reference.tab.discipline"), count: DISCIPLINE.length },
-    { key: "servizi", label: t("reference.tab.servizi"), count: SERVIZI.length + STATI.length },
+    { key: "servizi", label: t("reference.tab.servizi"), count: SERVIZI.length + STATI_FASI.length },
   ];
 
   const filtered = useMemo(() => {
@@ -155,7 +155,7 @@ export function Reference() {
         <Card>
           <h4 className="mb-3 text-sm font-semibold">{t("reference.stati.title")}</h4>
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
-            {STATI.map((s) => (
+            {STATI_FASI.map((s) => (
               <div
                 key={s.code}
                 className="rounded-lg border border-[color:var(--color-mase-border)] bg-[color:var(--color-mase-surface-elevated)] px-3 py-2"

@@ -8,7 +8,7 @@ import {
   TIPI_FILE,
   DISCIPLINE,
   SERVIZI,
-  STATI,
+  STATI_FASI,
   CODICE_BENE_DEFAULT,
   CODICE_AGENZIA_DEFAULT,
   CATALOGO_ELABORATI,
@@ -49,8 +49,7 @@ export function Generator() {
     tipoFile: "",
     disciplina: "Z",
     servizio: "P",
-    stato: "D", // default per MASE: progetto Demolizioni
-    cifraFase: "0",
+    statoFase: "D", // default per MASE: progetto Demolizioni
     bloccoFunzionale: "00",
     progressivo: "01",
   });
@@ -323,7 +322,7 @@ export function Generator() {
 
         <Divider label={t("generator.section.codiceElaborato")} />
 
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-5">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           <div>
             <FieldLabel index={7} subindex="a" title={t("field.servizio")} description={t("field.servizio.hint")} required />
             <Select
@@ -336,34 +335,18 @@ export function Generator() {
             />
           </div>
           <div>
-            <FieldLabel index={7} subindex="b" title="Stato" description="opzionale" />
+            <FieldLabel index={7} subindex="b" title={t("field.statoFase")} description={t("field.statoFase.hint")} required />
             <Select
-              value={input.stato}
-              onChange={(e) => setInput((s) => ({ ...s, stato: e.target.value }))}
-              placeholder="— Nessuno (6 char) —"
-              options={STATI.map((st) => ({
+              value={input.statoFase}
+              onChange={(e) => setInput((s) => ({ ...s, statoFase: e.target.value }))}
+              options={STATI_FASI.map((st) => ({
                 value: st.code,
                 label: `${st.code} — ${st.description}`,
               }))}
             />
           </div>
           <div>
-            <FieldLabel index={7} subindex="c" title={t("field.fase")} description={t("field.fase.hint")} required />
-            <Input
-              monospace
-              value={input.cifraFase}
-              maxLength={1}
-              onChange={(e) =>
-                setInput((s) => ({
-                  ...s,
-                  cifraFase: e.target.value.replace(/\D/g, "").slice(0, 1),
-                }))
-              }
-              placeholder="0"
-            />
-          </div>
-          <div>
-            <FieldLabel index={7} subindex="d" title={t("field.bloccoFunz")} description={t("field.bloccoFunz.hint")} required />
+            <FieldLabel index={7} subindex="c" title={t("field.bloccoFunz")} description={t("field.bloccoFunz.hint")} required />
             <Input
               monospace
               value={input.bloccoFunzionale}
@@ -381,7 +364,7 @@ export function Generator() {
             />
           </div>
           <div>
-            <FieldLabel index={7} subindex="e" title={t("field.progressivo")} description={t("field.progressivo.hint")} required />
+            <FieldLabel index={7} subindex="d" title={t("field.progressivo")} description={t("field.progressivo.hint")} required />
             <Input
               monospace
               value={input.progressivo}

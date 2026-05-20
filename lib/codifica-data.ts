@@ -225,8 +225,8 @@ export const DISCIPLINE: LookupEntry[] = [
 export const DISCIPLINA_REGEX = /^[A-Z]$/;
 
 /* ============================================================
- * CAMPO 7 — CODICE ALFANUMERICO ELABORATO (6 char: L + N + 4N)
- * Composizione: <Servizio><CifraFase><BloccoFunzionale(2)><Progressivo(2)>
+ * CAMPO 7 — CODICE ALFANUMERICO ELABORATO (6 char)
+ * Composizione: <Servizio><Stato/Fase><BloccoFunzionale(2)><Progressivo(2)>
  * Tabella 16, Figura 11
  * ============================================================ */
 export const SERVIZI: LookupEntry[] = [
@@ -243,7 +243,8 @@ export const SERVIZI: LookupEntry[] = [
   { code: "G", description: "Generale" },
 ];
 
-export const STATI: LookupEntry[] = [
+export const STATI_FASI: LookupEntry[] = [
+  { code: "0", description: "Fase 0 / nessuno stato" },
   { code: "S", description: "Stato di fatto" },
   { code: "D", description: "Demolizioni" },
   { code: "N", description: "Nuove costruzioni" },
@@ -251,10 +252,10 @@ export const STATI: LookupEntry[] = [
   { code: "T", description: "Sicurezza (temporanei)" },
 ];
 
-// Regex per il campo 7 completo. Due formati ammessi:
-//   - 6 char: <Servizio(1L)><Fase(1N)><BF(2N)><Progressivo(2N)>          es. C00001 (Capitolati Informativi)
-//   - 7 char: <Servizio(1L)><Stato(1L)><Fase(1N)><BF(2N)><Progressivo(2N)>  es. PD00001 (elaborati con stato)
-export const CODICE_ELABORATO_REGEX = /^[A-Z]{1,2}\d{5}$/;
+// Regex per il campo 7 completo:
+//   - 6 char: <Servizio(1L)><Stato/Fase(1L|1N)><BF(2N)><Progressivo(2N)>
+//     es. C00001 (Fase 0), PD0001 (Demolizioni), PS0001 (Stato di fatto)
+export const CODICE_ELABORATO_REGEX = /^[A-Z][A-Z0-9]\d{4}$/;
 
 /* ============================================================
  * METADATI PROGETTO MASE
@@ -275,12 +276,12 @@ export const SEPARATORE = "-";
  * STRUTTURA COMPLETA NAMING
  * <CodiceBene>-<CodiceAgenzia>-<CodiceDoc>-<Livello>-<TipoFile>-<Disciplina>-<CodiceElaborato>
  * Esempi:
- *   RMB1284-ADD-PLANLIVEL-GF-DR-A-PD00001
- *   RMB1284-ADD-RELGENERA-XX-RT-Z-PD00001
- *   RMB1284-ADD-PLANGEOLO-ZZ-DR-Z-PD00001
+ *   RMB1284-ADD-PLANLIVEL-GF-DR-A-PD0001
+ *   RMB1284-ADD-RELGENERA-XX-RT-Z-PD0001
+ *   RMB1284-ADD-PLANGEOLO-ZZ-DR-Z-PD0001
  * ============================================================ */
 export const NAMING_FULL_REGEX =
-  /^([A-Z]{3}\d{4})-([A-Z]{3})-([A-Z0-9]{9})-([A-Z0-9]{2})-([A-Z0-9]{2})-([A-Z])-([A-Z]{1,2}\d{5})$/;
+  /^([A-Z]{3}\d{4})-([A-Z]{3})-([A-Z0-9]{9})-([A-Z0-9]{2})-([A-Z0-9]{2})-([A-Z])-([A-Z][A-Z0-9]\d{4})$/;
 
 /* ============================================================
  * CATALOGO ELABORATI PFTE — Demolizioni MASE (R1)
@@ -305,94 +306,94 @@ export type CatalogoEntry = {
 
 export const CATALOGO_ELABORATI: CatalogoEntry[] = [
   // --- DOCUMENTAZIONE GENERALE ---
-  { codice: "RMB1284-ADD-ELENCELAB-XX-AM-Z-PD00001", descrizione: "ELENCO ELABORATI", gruppo: "Documentazione generale" },
-  { codice: "RMB1284-ADD-RELGENERA-XX-RT-Z-PD00001", descrizione: "RELAZIONE GENERALE", gruppo: "Documentazione generale" },
-  { codice: "RMB1284-ADD-RELTECNIC-XX-RT-Z-PD00001", descrizione: "RELAZIONE TECNICA CORREDATA DI RILIEVI, ACCERTAMENTI, INDAGINI E STUDI SPECIALISTICI", gruppo: "Documentazione generale" },
-  { codice: "RMB1284-ADD-RILFOTOGR-XX-PH-Z-PD00001", descrizione: "DOCUMENTAZIONE FOTOGRAFICA", gruppo: "Documentazione generale" },
-  { codice: "RMB1284-ADD-RELINTERF-XX-RT-Z-PD00001", descrizione: "RELAZIONE SULLE INTERFERENZE", gruppo: "Documentazione generale" },
-  { codice: "RMB1284-ADD-PIAGESINF-XX-RT-Z-PD00001", descrizione: "PIANO DI GESTIONE INFORMATIVA", gruppo: "Documentazione generale" },
-  { codice: "RMB1284-ADD-CAPSPEAPP-XX-AM-Z-PD00001", descrizione: "CAPITOLATO SPECIALE D'APPALTO E SCHEMA DI CONTRATTO", gruppo: "Documentazione generale" },
-  { codice: "RMB1284-ADD-CONTRATTO-XX-AM-Z-PD00001", descrizione: "SCHEMA DI CONTRATTO", gruppo: "Documentazione generale" },
-  { codice: "RMB1284-ADD-CAPSPEAPP-XX-AM-Z-PD00002", descrizione: "CAPITOLATO ONERI E OBBLIGHI DELL'APPALTATORE PER I P.E.A.", gruppo: "Documentazione generale" },
-  { codice: "RMB1284-ADD-PIAGEOSTR-XX-RT-S-PD00001", descrizione: "PIANO PRELIMINARE DI MONITORAGGIO GEOTECNICO E STRUTTURALE", gruppo: "Documentazione generale" },
-  { codice: "RMB1284-ADD-RELTECNIC-XX-RT-H-PD00001", descrizione: "PIANO PRELIMINARE DI MONITORAGGIO AMBIENTALE", gruppo: "Documentazione generale" },
+  { codice: "RMB1284-ADD-ELENCELAB-XX-AM-Z-PD0001", descrizione: "ELENCO ELABORATI", gruppo: "Documentazione generale" },
+  { codice: "RMB1284-ADD-RELGENERA-XX-RT-Z-PD0001", descrizione: "RELAZIONE GENERALE", gruppo: "Documentazione generale" },
+  { codice: "RMB1284-ADD-RELTECNIC-XX-RT-Z-PD0001", descrizione: "RELAZIONE TECNICA CORREDATA DI RILIEVI, ACCERTAMENTI, INDAGINI E STUDI SPECIALISTICI", gruppo: "Documentazione generale" },
+  { codice: "RMB1284-ADD-RILFOTOGR-XX-PH-Z-PD0001", descrizione: "DOCUMENTAZIONE FOTOGRAFICA", gruppo: "Documentazione generale" },
+  { codice: "RMB1284-ADD-RELINTERF-XX-RT-Z-PD0001", descrizione: "RELAZIONE SULLE INTERFERENZE", gruppo: "Documentazione generale" },
+  { codice: "RMB1284-ADD-PIAGESINF-XX-RT-Z-PD0001", descrizione: "PIANO DI GESTIONE INFORMATIVA", gruppo: "Documentazione generale" },
+  { codice: "RMB1284-ADD-CAPSPEAPP-XX-AM-Z-PD0001", descrizione: "CAPITOLATO SPECIALE D'APPALTO E SCHEMA DI CONTRATTO", gruppo: "Documentazione generale" },
+  { codice: "RMB1284-ADD-CONTRATTO-XX-AM-Z-PD0001", descrizione: "SCHEMA DI CONTRATTO", gruppo: "Documentazione generale" },
+  { codice: "RMB1284-ADD-CAPSPEAPP-XX-AM-Z-PD0002", descrizione: "CAPITOLATO ONERI E OBBLIGHI DELL'APPALTATORE PER I P.E.A.", gruppo: "Documentazione generale" },
+  { codice: "RMB1284-ADD-PIAGEOSTR-XX-RT-S-PD0001", descrizione: "PIANO PRELIMINARE DI MONITORAGGIO GEOTECNICO E STRUTTURALE", gruppo: "Documentazione generale" },
+  { codice: "RMB1284-ADD-RELTECNIC-XX-RT-H-PD0001", descrizione: "PIANO PRELIMINARE DI MONITORAGGIO AMBIENTALE", gruppo: "Documentazione generale" },
 
   // --- AMBIENTE E SOSTENIBILITÀ ---
-  { codice: "RMB1284-ADD-STUPREAMB-XX-RT-Z-PD00001", descrizione: "STUDIO DI PRE-FATTIBILITÀ AMBIENTALE", gruppo: "Ambiente e sostenibilità" },
-  { codice: "RMB1284-ADD-STUPREAMB-XX-DR-Z-PD00001", descrizione: "ALLEGATI ALLO STUDIO DI PRE-FATTIBILITÀ AMBIENTALE", gruppo: "Ambiente e sostenibilità" },
-  { codice: "RMB1284-ADD-RELSOSOPE-XX-RT-Z-PD00001", descrizione: "RELAZIONE DI SOSTENIBILITÀ DELL'OPERA", gruppo: "Ambiente e sostenibilità" },
-  { codice: "RMB1284-ADD-RELAPPCAM-XX-RT-Z-PD00001", descrizione: "ALLEGATI ALLA RELAZIONE CAM", gruppo: "Ambiente e sostenibilità" },
-  { codice: "RMB1284-ADD-RELGESMAT-XX-RT-D-PD00001", descrizione: "RELAZIONE SULLA GESTIONE DELLE MATERIE", gruppo: "Ambiente e sostenibilità" },
-  { codice: "RMB1284-ADD-RELGESMAT-XX-DR-D-PD00001", descrizione: "RELAZIONE SULLA GESTIONE DELLE MATERIE (Tavole)", gruppo: "Ambiente e sostenibilità" },
-  { codice: "RMB1284-ADD-RELVEGETA-XX-RT-G-PD00001", descrizione: "RILIEVO ARBOREO E VEGETAZIONALE", gruppo: "Ambiente e sostenibilità" },
-  { codice: "RMB1284-ADD-RELVEGETA-XX-RT-G-PD00002", descrizione: "RELAZIONE TECNICA AGRONOMICA", gruppo: "Ambiente e sostenibilità" },
-  { codice: "RMB1284-ADD-RELACUSTI-XX-RT-Z-PD00001", descrizione: "RELAZIONE DI VALUTAZIONE PREVISIONALE DI CLIMA ED IMPATTO ACUSTICO IN FASE DI CANTIERE", gruppo: "Ambiente e sostenibilità" },
-  { codice: "RMB1284-ADD-RELIDRAUL-XX-RT-Z-PD00001", descrizione: "VALUTAZIONE DEL RISCHIO IDRAULICO", gruppo: "Ambiente e sostenibilità" },
+  { codice: "RMB1284-ADD-STUPREAMB-XX-RT-Z-PD0001", descrizione: "STUDIO DI PRE-FATTIBILITÀ AMBIENTALE", gruppo: "Ambiente e sostenibilità" },
+  { codice: "RMB1284-ADD-STUPREAMB-XX-DR-Z-PD0001", descrizione: "ALLEGATI ALLO STUDIO DI PRE-FATTIBILITÀ AMBIENTALE", gruppo: "Ambiente e sostenibilità" },
+  { codice: "RMB1284-ADD-RELSOSOPE-XX-RT-Z-PD0001", descrizione: "RELAZIONE DI SOSTENIBILITÀ DELL'OPERA", gruppo: "Ambiente e sostenibilità" },
+  { codice: "RMB1284-ADD-RELAPPCAM-XX-RT-Z-PD0001", descrizione: "ALLEGATI ALLA RELAZIONE CAM", gruppo: "Ambiente e sostenibilità" },
+  { codice: "RMB1284-ADD-RELGESMAT-XX-RT-D-PD0001", descrizione: "RELAZIONE SULLA GESTIONE DELLE MATERIE", gruppo: "Ambiente e sostenibilità" },
+  { codice: "RMB1284-ADD-RELGESMAT-XX-DR-D-PD0001", descrizione: "RELAZIONE SULLA GESTIONE DELLE MATERIE (Tavole)", gruppo: "Ambiente e sostenibilità" },
+  { codice: "RMB1284-ADD-RELVEGETA-XX-RT-G-PD0001", descrizione: "RILIEVO ARBOREO E VEGETAZIONALE", gruppo: "Ambiente e sostenibilità" },
+  { codice: "RMB1284-ADD-RELVEGETA-XX-RT-G-PD0002", descrizione: "RELAZIONE TECNICA AGRONOMICA", gruppo: "Ambiente e sostenibilità" },
+  { codice: "RMB1284-ADD-RELACUSTI-XX-RT-Z-PD0001", descrizione: "RELAZIONE DI VALUTAZIONE PREVISIONALE DI CLIMA ED IMPATTO ACUSTICO IN FASE DI CANTIERE", gruppo: "Ambiente e sostenibilità" },
+  { codice: "RMB1284-ADD-RELIDRAUL-XX-RT-Z-PD0001", descrizione: "VALUTAZIONE DEL RISCHIO IDRAULICO", gruppo: "Ambiente e sostenibilità" },
 
   // --- INDAGINI E RILIEVI ---
-  { codice: "RMB1284-ADD-PLANGEOLO-ZZ-DR-Z-PD00001", descrizione: "CARTE GEOLOGICHE E DEI VINCOLI", gruppo: "Indagini e rilievi" },
-  { codice: "RMB1284-ADD-PLANGEOTE-ZZ-DR-Z-PD00001", descrizione: "PLANIMETRIA CON UBICAZIONE DELLE INDAGINI GEOGNOSTICHE E AMBIENTALI", gruppo: "Indagini e rilievi" },
-  { codice: "RMB1284-ADD-SEZIONEIS-ZZ-DR-Z-PD00001", descrizione: "SEZIONI GEOLOGICHE", gruppo: "Indagini e rilievi" },
-  { codice: "RMB1284-ADD-PLANSOTSV-ZZ-DR-Z-PD00001", descrizione: "PLANIMETRIA GEORADAR", gruppo: "Indagini e rilievi" },
-  { codice: "RMB1284-ADD-GEOLOGICA-ZZ-DR-Z-PD00001", descrizione: "RELAZIONE GEOLOGICA E SISMICA", gruppo: "Indagini e rilievi" },
-  { codice: "RMB1284-ADD-RELINDAGI-ZZ-DR-Z-PD00001", descrizione: "ELABORATO RELATIVO AL RISULTATO DELLE INDAGINI PRELIMINARI", gruppo: "Indagini e rilievi" },
+  { codice: "RMB1284-ADD-PLANGEOLO-ZZ-DR-Z-PD0001", descrizione: "CARTE GEOLOGICHE E DEI VINCOLI", gruppo: "Indagini e rilievi" },
+  { codice: "RMB1284-ADD-PLANGEOTE-ZZ-DR-Z-PD0001", descrizione: "PLANIMETRIA CON UBICAZIONE DELLE INDAGINI GEOGNOSTICHE E AMBIENTALI", gruppo: "Indagini e rilievi" },
+  { codice: "RMB1284-ADD-SEZIONEIS-ZZ-DR-Z-PD0001", descrizione: "SEZIONI GEOLOGICHE", gruppo: "Indagini e rilievi" },
+  { codice: "RMB1284-ADD-PLANSOTSV-ZZ-DR-Z-PD0001", descrizione: "PLANIMETRIA GEORADAR", gruppo: "Indagini e rilievi" },
+  { codice: "RMB1284-ADD-GEOLOGICA-ZZ-DR-Z-PD0001", descrizione: "RELAZIONE GEOLOGICA E SISMICA", gruppo: "Indagini e rilievi" },
+  { codice: "RMB1284-ADD-RELINDAGI-ZZ-DR-Z-PD0001", descrizione: "ELABORATO RELATIVO AL RISULTATO DELLE INDAGINI PRELIMINARI", gruppo: "Indagini e rilievi" },
 
   // --- ECONOMICA ---
-  { codice: "RMB1284-ADD-QUADROECO-XX-CP-Z-PD00001", descrizione: "QUADRO ECONOMICO", gruppo: "Economica" },
-  { codice: "RMB1284-ADD-CALSOMSPE-XX-CP-D-PD00001", descrizione: "COMPUTO ESTIMATIVO OPERE DI DEMOLIZIONE", gruppo: "Economica" },
-  { codice: "RMB1284-ADD-CALSOMSPE-XX-CP-D-PD00002", descrizione: "ELENCO PREZZI UNITARIO OPERE DI DEMOLIZIONE", gruppo: "Economica" },
-  { codice: "RMB1284-ADD-CALSOMSPE-XX-CP-D-PD00003", descrizione: "ANALISI PREZZI OPERE DI DEMOLIZIONE", gruppo: "Economica" },
-  { codice: "RMB1284-ADD-CALSOMSPE-XX-CP-D-PD00004", descrizione: "STIMA INCIDENZA DELLA MANODOPERA OPERE DI DEMOLIZIONE", gruppo: "Economica" },
-  { codice: "RMB1284-ADD-CALSOMSPE-XX-CP-H-PD00001", descrizione: "STIMA DEI COSTI DELLA SICUREZZA", gruppo: "Economica" },
+  { codice: "RMB1284-ADD-QUADROECO-XX-CP-Z-PD0001", descrizione: "QUADRO ECONOMICO", gruppo: "Economica" },
+  { codice: "RMB1284-ADD-CALSOMSPE-XX-CP-D-PD0001", descrizione: "COMPUTO ESTIMATIVO OPERE DI DEMOLIZIONE", gruppo: "Economica" },
+  { codice: "RMB1284-ADD-CALSOMSPE-XX-CP-D-PD0002", descrizione: "ELENCO PREZZI UNITARIO OPERE DI DEMOLIZIONE", gruppo: "Economica" },
+  { codice: "RMB1284-ADD-CALSOMSPE-XX-CP-D-PD0003", descrizione: "ANALISI PREZZI OPERE DI DEMOLIZIONE", gruppo: "Economica" },
+  { codice: "RMB1284-ADD-CALSOMSPE-XX-CP-D-PD0004", descrizione: "STIMA INCIDENZA DELLA MANODOPERA OPERE DI DEMOLIZIONE", gruppo: "Economica" },
+  { codice: "RMB1284-ADD-CALSOMSPE-XX-CP-H-PD0001", descrizione: "STIMA DEI COSTI DELLA SICUREZZA", gruppo: "Economica" },
 
   // --- STATO DI FATTO ---
-  { codice: "RMB1284-ADD-RELTECNIC-XX-RT-Z-PD00002", descrizione: "RELAZIONE TECNICA SULLO STATO DI FATTO", gruppo: "Stato di fatto" },
+  { codice: "RMB1284-ADD-RELTECNIC-XX-RT-Z-PD0002", descrizione: "RELAZIONE TECNICA SULLO STATO DI FATTO", gruppo: "Stato di fatto" },
 
   // --- INQUADRAMENTO TERRITORIALE ---
-  { codice: "RMB1284-ADD-PLANINSIE-ZZ-DR-A-PD00001", descrizione: "INQUADRAMENTO URBANISTICO E TERRITORIALE", gruppo: "Inquadramento territoriale" },
-  { codice: "RMB1284-ADD-PLANCURVE-ZZ-DR-L-PD00001", descrizione: "PLANIMETRIA CON LE CURVE DI LIVELLO", gruppo: "Inquadramento territoriale" },
-  { codice: "RMB1284-ADD-SEZIONEIS-ZZ-DR-L-PD00001", descrizione: "PROFILI STRADALI 1/2", gruppo: "Inquadramento territoriale" },
-  { codice: "RMB1284-ADD-SEZIONEIS-ZZ-DR-L-PD00002", descrizione: "PROFILI STRADALI 2/2", gruppo: "Inquadramento territoriale" },
-  { codice: "RMB1284-ADD-PLANINSIE-ZZ-DR-L-PD00002", descrizione: "VIABILITÀ", gruppo: "Inquadramento territoriale" },
-  { codice: "RMB1284-ADD-PLANGENER-ZZ-DR-L-PD00002", descrizione: "PLANIMETRIE DELLE INTERFERENZE", gruppo: "Inquadramento territoriale" },
+  { codice: "RMB1284-ADD-PLANINSIE-ZZ-DR-A-PD0001", descrizione: "INQUADRAMENTO URBANISTICO E TERRITORIALE", gruppo: "Inquadramento territoriale" },
+  { codice: "RMB1284-ADD-PLANCURVE-ZZ-DR-L-PD0001", descrizione: "PLANIMETRIA CON LE CURVE DI LIVELLO", gruppo: "Inquadramento territoriale" },
+  { codice: "RMB1284-ADD-SEZIONEIS-ZZ-DR-L-PD0001", descrizione: "PROFILI STRADALI 1/2", gruppo: "Inquadramento territoriale" },
+  { codice: "RMB1284-ADD-SEZIONEIS-ZZ-DR-L-PD0002", descrizione: "PROFILI STRADALI 2/2", gruppo: "Inquadramento territoriale" },
+  { codice: "RMB1284-ADD-PLANINSIE-ZZ-DR-L-PD0002", descrizione: "VIABILITÀ", gruppo: "Inquadramento territoriale" },
+  { codice: "RMB1284-ADD-PLANGENER-ZZ-DR-L-PD0002", descrizione: "PLANIMETRIE DELLE INTERFERENZE", gruppo: "Inquadramento territoriale" },
 
   // --- RILIEVO ARCHITETTONICO ---
-  { codice: "RMB1284-ADD-PLANGENER-ZZ-DR-A-PD00001", descrizione: "Rilievo - Planimetria generale", gruppo: "Rilievo architettonico" },
-  { codice: "RMB1284-ADD-PLANLIVEL-G1-DR-A-PD00001", descrizione: "Rilievo - Piano interrato", gruppo: "Rilievo architettonico" },
-  { codice: "RMB1284-ADD-PLANLIVEL-GF-DR-A-PD00001", descrizione: "Rilievo - Piano terra", gruppo: "Rilievo architettonico" },
-  { codice: "RMB1284-ADD-PLANLIVEL-01-DR-A-PD00001", descrizione: "Rilievo - Piano primo", gruppo: "Rilievo architettonico" },
-  { codice: "RMB1284-ADD-PLANLIVEL-02-DR-A-PD00001", descrizione: "Rilievo - Piano secondo", gruppo: "Rilievo architettonico" },
-  { codice: "RMB1284-ADD-PLANLIVEL-03-DR-A-PD00001", descrizione: "Rilievo - Piano terzo", gruppo: "Rilievo architettonico" },
-  { codice: "RMB1284-ADD-PLANLIVEL-04-DR-A-PD00001", descrizione: "Rilievo - Piano quarto", gruppo: "Rilievo architettonico" },
-  { codice: "RMB1284-ADD-PLANLIVEL-05-DR-A-PD00001", descrizione: "Rilievo - Piano quinto", gruppo: "Rilievo architettonico" },
-  { codice: "RMB1284-ADD-PLANLIVEL-06-DR-A-PD00001", descrizione: "Rilievo - Piano sesto", gruppo: "Rilievo architettonico" },
-  { codice: "RMB1284-ADD-PLANLIVEL-07-DR-A-PD00001", descrizione: "Rilievo - Piano settimo", gruppo: "Rilievo architettonico" },
-  { codice: "RMB1284-ADD-PLANLIVEL-08-DR-A-PD00001", descrizione: "Rilievo - Piano copertura", gruppo: "Rilievo architettonico" },
-  { codice: "RMB1284-ADD-PROSPETTI-ZZ-DR-A-PD00001", descrizione: "Rilievo - Prospetti Sud, Nord", gruppo: "Rilievo architettonico" },
-  { codice: "RMB1284-ADD-PROSPETTI-ZZ-DR-A-PD00002", descrizione: "Rilievo - Prospetti Est", gruppo: "Rilievo architettonico" },
-  { codice: "RMB1284-ADD-PROSPETTI-ZZ-DR-A-PD00003", descrizione: "Rilievo - Prospetti Ovest", gruppo: "Rilievo architettonico" },
-  { codice: "RMB1284-ADD-SEZIONEIS-ZZ-DR-A-PD00001", descrizione: "Rilievo - Sezioni S-01", gruppo: "Rilievo architettonico" },
-  { codice: "RMB1284-ADD-SEZIONEIS-ZZ-DR-A-PD00002", descrizione: "Rilievo - Sezioni S-02", gruppo: "Rilievo architettonico" },
-  { codice: "RMB1284-ADD-SEZIONEIS-ZZ-DR-A-PD00003", descrizione: "Rilievo - Sezioni S-03, S-04", gruppo: "Rilievo architettonico" },
-  { codice: "RMB1284-ADD-SEZIONEIS-ZZ-DR-A-PD00004", descrizione: "Rilievo - Sezioni S-05, S-06", gruppo: "Rilievo architettonico" },
+  { codice: "RMB1284-ADD-PLANGENER-ZZ-DR-A-PD0001", descrizione: "Rilievo - Planimetria generale", gruppo: "Rilievo architettonico" },
+  { codice: "RMB1284-ADD-PLANLIVEL-G1-DR-A-PD0001", descrizione: "Rilievo - Piano interrato", gruppo: "Rilievo architettonico" },
+  { codice: "RMB1284-ADD-PLANLIVEL-GF-DR-A-PD0001", descrizione: "Rilievo - Piano terra", gruppo: "Rilievo architettonico" },
+  { codice: "RMB1284-ADD-PLANLIVEL-01-DR-A-PD0001", descrizione: "Rilievo - Piano primo", gruppo: "Rilievo architettonico" },
+  { codice: "RMB1284-ADD-PLANLIVEL-02-DR-A-PD0001", descrizione: "Rilievo - Piano secondo", gruppo: "Rilievo architettonico" },
+  { codice: "RMB1284-ADD-PLANLIVEL-03-DR-A-PD0001", descrizione: "Rilievo - Piano terzo", gruppo: "Rilievo architettonico" },
+  { codice: "RMB1284-ADD-PLANLIVEL-04-DR-A-PD0001", descrizione: "Rilievo - Piano quarto", gruppo: "Rilievo architettonico" },
+  { codice: "RMB1284-ADD-PLANLIVEL-05-DR-A-PD0001", descrizione: "Rilievo - Piano quinto", gruppo: "Rilievo architettonico" },
+  { codice: "RMB1284-ADD-PLANLIVEL-06-DR-A-PD0001", descrizione: "Rilievo - Piano sesto", gruppo: "Rilievo architettonico" },
+  { codice: "RMB1284-ADD-PLANLIVEL-07-DR-A-PD0001", descrizione: "Rilievo - Piano settimo", gruppo: "Rilievo architettonico" },
+  { codice: "RMB1284-ADD-PLANLIVEL-08-DR-A-PD0001", descrizione: "Rilievo - Piano copertura", gruppo: "Rilievo architettonico" },
+  { codice: "RMB1284-ADD-PROSPETTI-ZZ-DR-A-PD0001", descrizione: "Rilievo - Prospetti Sud, Nord", gruppo: "Rilievo architettonico" },
+  { codice: "RMB1284-ADD-PROSPETTI-ZZ-DR-A-PD0002", descrizione: "Rilievo - Prospetti Est", gruppo: "Rilievo architettonico" },
+  { codice: "RMB1284-ADD-PROSPETTI-ZZ-DR-A-PD0003", descrizione: "Rilievo - Prospetti Ovest", gruppo: "Rilievo architettonico" },
+  { codice: "RMB1284-ADD-SEZIONEIS-ZZ-DR-A-PD0001", descrizione: "Rilievo - Sezioni S-01", gruppo: "Rilievo architettonico" },
+  { codice: "RMB1284-ADD-SEZIONEIS-ZZ-DR-A-PD0002", descrizione: "Rilievo - Sezioni S-02", gruppo: "Rilievo architettonico" },
+  { codice: "RMB1284-ADD-SEZIONEIS-ZZ-DR-A-PD0003", descrizione: "Rilievo - Sezioni S-03, S-04", gruppo: "Rilievo architettonico" },
+  { codice: "RMB1284-ADD-SEZIONEIS-ZZ-DR-A-PD0004", descrizione: "Rilievo - Sezioni S-05, S-06", gruppo: "Rilievo architettonico" },
 
   // --- DEMOLIZIONI ---
-  { codice: "RMB1284-ADD-RELTECNIC-XX-RT-D-PD00001", descrizione: "RELAZIONE TECNICA SULLE OPERE DI DEMOLIZIONE", gruppo: "Demolizioni" },
-  { codice: "RMB1284-ADD-RELTECNIC-XX-RT-D-PD00002", descrizione: "SCHEDATURA ANALITICA - Analisi Unità Omogenee mono-materiale", gruppo: "Demolizioni" },
-  { codice: "RMB1284-ADD-PLANGENER-ZZ-DR-D-PD00001", descrizione: "DEMOLIZIONE SELETTIVA - Messa in sicurezza, opere provvisionali", gruppo: "Demolizioni" },
-  { codice: "RMB1284-ADD-PLANLIVEL-G2-DR-D-PD00001", descrizione: "DEMOLIZIONE SELETTIVA - Piano G2", gruppo: "Demolizioni" },
-  { codice: "RMB1284-ADD-PLANLIVEL-G1-DR-D-PD00001", descrizione: "DEMOLIZIONE SELETTIVA - Piano G1", gruppo: "Demolizioni" },
-  { codice: "RMB1284-ADD-PLANLIVEL-GF-DR-D-PD00001", descrizione: "DEMOLIZIONE SELETTIVA - Piano GF", gruppo: "Demolizioni" },
-  { codice: "RMB1284-ADD-PLANLIVEL-01-DR-D-PD00001", descrizione: "DEMOLIZIONE SELETTIVA - Piano 1", gruppo: "Demolizioni" },
-  { codice: "RMB1284-ADD-PLANLIVEL-02-DR-D-PD00001", descrizione: "DEMOLIZIONE SELETTIVA - Piano 2", gruppo: "Demolizioni" },
-  { codice: "RMB1284-ADD-PLANLIVEL-03-DR-D-PD00001", descrizione: "DEMOLIZIONE SELETTIVA - Piano 3", gruppo: "Demolizioni" },
-  { codice: "RMB1284-ADD-PLANLIVEL-04-DR-D-PD00001", descrizione: "DEMOLIZIONE SELETTIVA - Piano 4", gruppo: "Demolizioni" },
-  { codice: "RMB1284-ADD-PLANLIVEL-05-DR-D-PD00001", descrizione: "DEMOLIZIONE SELETTIVA - Piano 5", gruppo: "Demolizioni" },
-  { codice: "RMB1284-ADD-PLANLIVEL-06-DR-D-PD00001", descrizione: "DEMOLIZIONE SELETTIVA - Piano 6", gruppo: "Demolizioni" },
-  { codice: "RMB1284-ADD-PLANLIVEL-07-DR-D-PD00001", descrizione: "DEMOLIZIONE SELETTIVA - Piano 7", gruppo: "Demolizioni" },
-  { codice: "RMB1284-ADD-PLANLIVEL-08-DR-D-PD00001", descrizione: "DEMOLIZIONE SELETTIVA - Piano 8", gruppo: "Demolizioni" },
-  { codice: "RMB1284-ADD-PROSPETTI-ZZ-DR-D-PD00001", descrizione: "DEMOLIZIONE SELETTIVA - Prospetti", gruppo: "Demolizioni" },
-  { codice: "RMB1284-ADD-SEZIONEIS-ZZ-DR-D-PD00001", descrizione: "DEMOLIZIONE SELETTIVA - Sezioni", gruppo: "Demolizioni" },
+  { codice: "RMB1284-ADD-RELTECNIC-XX-RT-D-PD0001", descrizione: "RELAZIONE TECNICA SULLE OPERE DI DEMOLIZIONE", gruppo: "Demolizioni" },
+  { codice: "RMB1284-ADD-RELTECNIC-XX-RT-D-PD0002", descrizione: "SCHEDATURA ANALITICA - Analisi Unità Omogenee mono-materiale", gruppo: "Demolizioni" },
+  { codice: "RMB1284-ADD-PLANGENER-ZZ-DR-D-PD0001", descrizione: "DEMOLIZIONE SELETTIVA - Messa in sicurezza, opere provvisionali", gruppo: "Demolizioni" },
+  { codice: "RMB1284-ADD-PLANLIVEL-G2-DR-D-PD0001", descrizione: "DEMOLIZIONE SELETTIVA - Piano G2", gruppo: "Demolizioni" },
+  { codice: "RMB1284-ADD-PLANLIVEL-G1-DR-D-PD0001", descrizione: "DEMOLIZIONE SELETTIVA - Piano G1", gruppo: "Demolizioni" },
+  { codice: "RMB1284-ADD-PLANLIVEL-GF-DR-D-PD0001", descrizione: "DEMOLIZIONE SELETTIVA - Piano GF", gruppo: "Demolizioni" },
+  { codice: "RMB1284-ADD-PLANLIVEL-01-DR-D-PD0001", descrizione: "DEMOLIZIONE SELETTIVA - Piano 1", gruppo: "Demolizioni" },
+  { codice: "RMB1284-ADD-PLANLIVEL-02-DR-D-PD0001", descrizione: "DEMOLIZIONE SELETTIVA - Piano 2", gruppo: "Demolizioni" },
+  { codice: "RMB1284-ADD-PLANLIVEL-03-DR-D-PD0001", descrizione: "DEMOLIZIONE SELETTIVA - Piano 3", gruppo: "Demolizioni" },
+  { codice: "RMB1284-ADD-PLANLIVEL-04-DR-D-PD0001", descrizione: "DEMOLIZIONE SELETTIVA - Piano 4", gruppo: "Demolizioni" },
+  { codice: "RMB1284-ADD-PLANLIVEL-05-DR-D-PD0001", descrizione: "DEMOLIZIONE SELETTIVA - Piano 5", gruppo: "Demolizioni" },
+  { codice: "RMB1284-ADD-PLANLIVEL-06-DR-D-PD0001", descrizione: "DEMOLIZIONE SELETTIVA - Piano 6", gruppo: "Demolizioni" },
+  { codice: "RMB1284-ADD-PLANLIVEL-07-DR-D-PD0001", descrizione: "DEMOLIZIONE SELETTIVA - Piano 7", gruppo: "Demolizioni" },
+  { codice: "RMB1284-ADD-PLANLIVEL-08-DR-D-PD0001", descrizione: "DEMOLIZIONE SELETTIVA - Piano 8", gruppo: "Demolizioni" },
+  { codice: "RMB1284-ADD-PROSPETTI-ZZ-DR-D-PD0001", descrizione: "DEMOLIZIONE SELETTIVA - Prospetti", gruppo: "Demolizioni" },
+  { codice: "RMB1284-ADD-SEZIONEIS-ZZ-DR-D-PD0001", descrizione: "DEMOLIZIONE SELETTIVA - Sezioni", gruppo: "Demolizioni" },
 
   // --- CAPITOLATO INFORMATIVO / SPECIFICHE METODOLOGICHE BIM ---
   // Documenti ufficiali dell'Agenzia del Demanio che definiscono il processo informativo BIM.
@@ -402,16 +403,16 @@ export const CATALOGO_ELABORATI: CatalogoEntry[] = [
   { codice: "RMB1284-ADD-SPECIFCSP-XX-SM-Z-C00001", descrizione: "Capitolato Informativo — Specifica Metodologica per il Coordinamento della Sicurezza in fase di Progettazione (CSP)", gruppo: "Capitolato Informativo BIM" },
 
   // --- SICUREZZA / CANTIERE ---
-  { codice: "RMB1284-ADD-PIASICCOO-XX-HS-D-PD00001", descrizione: "PSC - Piano di Sicurezza e Coordinamento", gruppo: "Sicurezza / Cantiere" },
-  { codice: "RMB1284-ADD-CRONOPROG-XX-HS-D-PD00001", descrizione: "CRONOPROGRAMMA", gruppo: "Sicurezza / Cantiere" },
-  { codice: "RMB1284-ADD-PLANGENER-ZZ-HS-D-PD00001", descrizione: "ELABORATI DI CANTIERE PER LE DEMOLIZIONI", gruppo: "Sicurezza / Cantiere" },
-  { codice: "RMB1284-ADD-PLANGENER-ZZ-HS-D-PD00002", descrizione: "STUDIO DELLA VIABILITÀ DI ACCESSO AL CANTIERE", gruppo: "Sicurezza / Cantiere" },
+  { codice: "RMB1284-ADD-PIASICCOO-XX-HS-D-PD0001", descrizione: "PSC - Piano di Sicurezza e Coordinamento", gruppo: "Sicurezza / Cantiere" },
+  { codice: "RMB1284-ADD-CRONOPROG-XX-HS-D-PD0001", descrizione: "CRONOPROGRAMMA", gruppo: "Sicurezza / Cantiere" },
+  { codice: "RMB1284-ADD-PLANGENER-ZZ-HS-D-PD0001", descrizione: "ELABORATI DI CANTIERE PER LE DEMOLIZIONI", gruppo: "Sicurezza / Cantiere" },
+  { codice: "RMB1284-ADD-PLANGENER-ZZ-HS-D-PD0002", descrizione: "STUDIO DELLA VIABILITÀ DI ACCESSO AL CANTIERE", gruppo: "Sicurezza / Cantiere" },
 
   // --- VERIFICA E COORDINAMENTO ---
-  { codice: "RMB1284-ADD-RELTECNIC-XX-RT-Z-PD00003", descrizione: "RELAZIONE TECNICA ASSEVERATA ANTE OPERAM", gruppo: "Verifica e coordinamento" },
-  { codice: "RMB1284-ADD-RELTECNIC-XX-RT-Z-PD00004", descrizione: "RELAZIONE SPECIALISTICA SUI MODELLI", gruppo: "Verifica e coordinamento" },
-  // ⚠ Aggiornamento R1 (2026-05-20): la disciplina di PD00005 è passata da Z (Generale) a M (Impiantistica meccanica)
-  { codice: "RMB1284-ADD-RELTECNIC-XX-RT-M-PD00005", descrizione: "REPORT DI COORDINAMENTO E VERIFICA", gruppo: "Verifica e coordinamento" },
+  { codice: "RMB1284-ADD-RELTECNIC-XX-RT-Z-PD0003", descrizione: "RELAZIONE TECNICA ASSEVERATA ANTE OPERAM", gruppo: "Verifica e coordinamento" },
+  { codice: "RMB1284-ADD-RELTECNIC-XX-RT-Z-PD0004", descrizione: "RELAZIONE SPECIALISTICA SUI MODELLI", gruppo: "Verifica e coordinamento" },
+  // ⚠ Aggiornamento R1 (2026-05-20): la disciplina di PD0005 è passata da Z (Generale) a M (Impiantistica meccanica)
+  { codice: "RMB1284-ADD-RELTECNIC-XX-RT-M-PD0005", descrizione: "REPORT DI COORDINAMENTO E VERIFICA", gruppo: "Verifica e coordinamento" },
 ];
 
 /* Helper: lookup per codice esatto (case-insensitive) */

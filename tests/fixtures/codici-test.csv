@@ -1,30 +1,30 @@
 ﻿Codice;Descrizione;Esito atteso
-RMB1284-ADD-ELENCELAB-XX-AM-Z-PD00001;ELENCO ELABORATI;ok
-RMB1284-ADD-RELGENERA-XX-RT-Z-PD00001;RELAZIONE GENERALE;ok
-RMB1284-ADD-PLANLIVEL-GF-DR-A-PD00001;Rilievo Piano terra;ok
-RMB1284-ADD-PLANLIVEL-G1-DR-D-PD00001;Demolizione selettiva Piano G1;ok
-RMB1284-ADD-PIASICCOO-XX-HS-D-PD00001;PSC;ok
-RMB1284-ADD-RELTECNIC-XX-RT-M-PD00005;Report di coordinamento (R1 update);ok
+RMB1284-ADD-ELENCELAB-XX-AM-Z-PD0001;ELENCO ELABORATI;ok
+RMB1284-ADD-RELGENERA-XX-RT-Z-PD0001;RELAZIONE GENERALE;ok
+RMB1284-ADD-PLANLIVEL-GF-DR-A-PD0001;Rilievo Piano terra;ok
+RMB1284-ADD-PLANLIVEL-G1-DR-D-PD0001;Demolizione selettiva Piano G1;ok
+RMB1284-ADD-PIASICCOO-XX-HS-D-PD0001;PSC;ok
+RMB1284-ADD-RELTECNIC-XX-RT-M-PD0005;Report di coordinamento (R1 update);ok
 RMB1284-ADD-SPECIFCSP-XX-SM-Z-C00001;Capitolato Informativo CSP;ok
 RMB1284-ADD-SPECIFRIL-XX-SM-Z-S00001;Specifica Metodologica Rilievi;ok
 RMB1284-ADD-SPECIFPRO-XX-SM-Z-P00001;Specifica Metodologica Progettazione;ok
 RMB1284-ADD-PLANLIVEL-04-DR-A-E00099;Piano 4 in fase Esecutivo (formato 6-char);out-of-catalog
-RMB1284-ADD-RELTECNIC-XX-RT-A-AN00099;Relazione As Built + Nuove costruzioni (composito);out-of-catalog
+RMB1284-ADD-RELTECNIC-XX-RT-A-AN0099;Relazione As Built + Nuove costruzioni (composito);out-of-catalog
 RMB1284-ADD-SPECIFCSP-XX-SM-Z-P00001;SPECIFCSP con servizio P invece di C;warning
 RMB1284-ADD-SPECIFRIL-XX-SM-Z-C00001;SPECIFRIL con servizio C invece di S;warning
-RMB1284-ADM-RM0411001-XX-RT-Z-PD00001;Codice Agenzia legacy ADM (Vulnerabilità Sismica);warning
-RMB1284-ADD-PIPPOXXXX-XX-RT-Z-PD00001;Codice documento sconosciuto 9 char;warning
-RMB1284-ADD-PLANGENER-XX-RT-Z-PD00001;PLANGENER (DR atteso) con RT;warning
-RMB1284-ADD-ELENCELAB-XX-AM-Z-PD10001;Fase 1 (di norma 0);warning
+RMB1284-ADM-RM0411001-XX-RT-Z-PD0001;Codice Agenzia legacy ADM (Vulnerabilità Sismica);warning
+RMB1284-ADD-PIPPOXXXX-XX-RT-Z-PD0001;Codice documento sconosciuto 9 char;warning
+RMB1284-ADD-PLANGENER-XX-RT-Z-PD0001;PLANGENER (DR atteso) con RT;warning
+RMB1284-ADD-ELENCELAB-XX-AM-Z-P90001;Stato/Fase 9 non riconosciuto;warning
 RMB1284-ADD-RELGENERA-XX-RT-Z;Campo 7 mancante;error
-RMB-ADD-RELGENERA-XX-RT-Z-PD00001;Codice Bene troppo corto;error
-RMB1284-ADD-ELEVAZIONI-XX-RT-Z-PD00001;ELEVAZIONI (10 char) — bug della v0 ora corretto;error
-RMB1284-ADD-RELGENERA-XX-RT-9-PD00001;Disciplina cifra;error
+RMB-ADD-RELGENERA-XX-RT-Z-PD0001;Codice Bene troppo corto;error
+RMB1284-ADD-ELEVAZIONI-XX-RT-Z-PD0001;ELEVAZIONI (10 char) — bug della v0 ora corretto;error
+RMB1284-ADD-RELGENERA-XX-RT-9-PD0001;Disciplina cifra;error
 RMB1284-ADD-RELGENERA-XX-RT-Z-PDX0001;Codice elaborato malformato (lettera in posizione cifra);error
 RMB1284-ADD-RELGENERA-XX-RT-Z-PD001;Codice elaborato troppo corto;error
-RMB1284-ADD-RELGENERA-99-RT-Z-PD00001;Livello 99 non in tabella;warning
-RMB1284-ADD-ELENCELAB-XX-AM-Z-PD00000;Progressivo 00;warning
-RMB1284 -ADD-ELENCELAB-XX-AM-Z-PD00001;Spazi embedded (dovrebbero essere normalizzati);ok
- RMB1284-ADD-RELGENERA-XX-RT-Z-PD00001 ;Spazi leading/trailing;ok
-rmb1284-add-relgenera-xx-rt-z-pd00001;Lowercase (deve essere uppercased);ok
-RMB1284-ADD-ELENCELAB-XX-AM-Z-PD00001-EXTRA;8 parti invece di 7;error
+RMB1284-ADD-RELGENERA-99-RT-Z-PD0001;Livello 99 non in tabella;warning
+RMB1284-ADD-ELENCELAB-XX-AM-Z-PD0000;Progressivo 00;warning
+RMB1284 -ADD-ELENCELAB-XX-AM-Z-PD0001;Spazi embedded (dovrebbero essere normalizzati);ok
+ RMB1284-ADD-RELGENERA-XX-RT-Z-PD0001 ;Spazi leading/trailing;ok
+rmb1284-add-relgenera-xx-rt-z-pd0001;Lowercase (deve essere uppercased);ok
+RMB1284-ADD-ELENCELAB-XX-AM-Z-PD0001-EXTRA;8 parti invece di 7;error
