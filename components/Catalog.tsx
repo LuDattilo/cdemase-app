@@ -212,7 +212,7 @@ export function Catalog() {
           <h3 className="text-base font-semibold">{t("catalog.title")}</h3>
           <div className="ml-auto flex items-center gap-2">
             {/* Ripristina nascosti */}
-            {countHidden > 0 && !selectMode && (
+            {countHidden > 0 && (
               <button
                 onClick={() => restoreHiddenCodes()}
                 className="inline-flex items-center gap-1 rounded-lg border border-[color:var(--color-mase-warn)]/40 bg-[color:var(--color-mase-warn-soft)] px-3 py-1.5 text-xs font-medium text-[color:var(--color-mase-warn)] transition-colors hover:border-[color:var(--color-mase-warn)]"
@@ -222,47 +222,14 @@ export function Catalog() {
                 {t("catalog.hidden.restore")} ({countHidden})
               </button>
             )}
-
-            {!selectMode ? (
-              <>
-                <button
-                  onClick={enterSelectMode}
-                  className="inline-flex items-center gap-1 rounded-lg border border-[color:var(--color-mase-border)] bg-[color:var(--color-mase-surface-elevated)] px-3 py-1.5 text-xs font-medium text-[color:var(--color-mase-text-muted)] transition-colors hover:border-[color:var(--color-mase-err)]/40 hover:text-[color:var(--color-mase-err)]"
-                >
-                  <CheckSquare className="h-3.5 w-3.5" /> {t("catalog.select")}
-                </button>
-                {countUser > 0 && (
-                  <button
-                    onClick={handleExport}
-                    className="inline-flex items-center gap-1 rounded-lg border border-[color:var(--color-mase-border)] bg-[color:var(--color-mase-surface-elevated)] px-3 py-1.5 text-xs font-medium text-[color:var(--color-mase-text-muted)] transition-colors hover:text-[color:var(--color-mase-text)]"
-                    title={t("catalog.backup.title")}
-                  >
-                    <Download className="h-3.5 w-3.5" /> {t("catalog.backup")}
-                  </button>
-                )}
-              </>
-            ) : (
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={selectAll}
-                  className="text-xs text-[color:var(--color-mase-primary)] hover:underline"
-                >
-                  {t("catalog.select.all")}
-                </button>
-                <span className="text-[color:var(--color-mase-text-subtle)]">·</span>
-                <button
-                  onClick={selectNone}
-                  className="text-xs text-[color:var(--color-mase-text-muted)] hover:underline"
-                >
-                  {t("catalog.select.none")}
-                </button>
-                <button
-                  onClick={exitSelectMode}
-                  className="inline-flex items-center gap-1 rounded-lg border border-[color:var(--color-mase-border)] bg-[color:var(--color-mase-surface-elevated)] px-3 py-1.5 text-xs font-medium text-[color:var(--color-mase-text-muted)] transition-colors hover:text-[color:var(--color-mase-text)]"
-                >
-                  {t("catalog.select.cancel")}
-                </button>
-              </div>
+            {countUser > 0 && !selectMode && (
+              <button
+                onClick={handleExport}
+                className="inline-flex items-center gap-1 rounded-lg border border-[color:var(--color-mase-border)] bg-[color:var(--color-mase-surface-elevated)] px-3 py-1.5 text-xs font-medium text-[color:var(--color-mase-text-muted)] transition-colors hover:text-[color:var(--color-mase-text)]"
+                title={t("catalog.backup.title")}
+              >
+                <Download className="h-3.5 w-3.5" /> {t("catalog.backup")}
+              </button>
             )}
           </div>
         </div>
@@ -311,6 +278,40 @@ export function Catalog() {
             >
               {t("catalog.reset")}
             </button>
+          )}
+        </div>
+
+        {/* Seleziona / controlli selezione — in basso alla card */}
+        <div className="mt-3 border-t border-[color:var(--color-mase-border)] pt-3">
+          {!selectMode ? (
+            <button
+              onClick={enterSelectMode}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-[color:var(--color-mase-border)] bg-[color:var(--color-mase-surface-elevated)] px-3 py-1.5 text-xs font-medium text-[color:var(--color-mase-text-muted)] transition-colors hover:border-[color:var(--color-mase-err)]/40 hover:text-[color:var(--color-mase-err)]"
+            >
+              <CheckSquare className="h-3.5 w-3.5" /> {t("catalog.select")}
+            </button>
+          ) : (
+            <div className="flex items-center gap-3">
+              <button
+                onClick={selectAll}
+                className="text-xs text-[color:var(--color-mase-primary)] hover:underline"
+              >
+                {t("catalog.select.all")}
+              </button>
+              <span className="text-[color:var(--color-mase-text-subtle)]">·</span>
+              <button
+                onClick={selectNone}
+                className="text-xs text-[color:var(--color-mase-text-muted)] hover:underline"
+              >
+                {t("catalog.select.none")}
+              </button>
+              <button
+                onClick={exitSelectMode}
+                className="ml-auto inline-flex items-center gap-1 rounded-lg border border-[color:var(--color-mase-border)] bg-[color:var(--color-mase-surface-elevated)] px-3 py-1.5 text-xs font-medium text-[color:var(--color-mase-text-muted)] transition-colors hover:text-[color:var(--color-mase-text)]"
+              >
+                {t("catalog.select.cancel")}
+              </button>
+            </div>
           )}
         </div>
       </Card>
