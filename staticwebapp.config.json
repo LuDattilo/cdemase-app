@@ -1,0 +1,14 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/docs/*", "/_next/*", "/favicon.ico", "/theme-init.js"]
+  },
+  "globalHeaders": {
+    "Content-Security-Policy": "frame-ancestors 'self' https://*.sharepoint.com https://*.office.com https://*.office365.com https://*.microsoft.com;",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "X-Content-Type-Options": "nosniff"
+  },
+  "mimeTypes": {
+    ".pdf": "application/pdf"
+  }
+}

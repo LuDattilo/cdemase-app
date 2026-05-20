@@ -1,0 +1,147 @@
+[
+  {
+    "codice": "RMB1284-ADD-ELENCELAB-XX-AM-Z-PD00001",
+    "descrizione": "ELENCO ELABORATI",
+    "expected": "ok"
+  },
+  {
+    "codice": "RMB1284-ADD-RELGENERA-XX-RT-Z-PD00001",
+    "descrizione": "RELAZIONE GENERALE",
+    "expected": "ok"
+  },
+  {
+    "codice": "RMB1284-ADD-PLANLIVEL-GF-DR-A-PD00001",
+    "descrizione": "Rilievo Piano terra",
+    "expected": "ok"
+  },
+  {
+    "codice": "RMB1284-ADD-PLANLIVEL-G1-DR-D-PD00001",
+    "descrizione": "Demolizione selettiva Piano G1",
+    "expected": "ok"
+  },
+  {
+    "codice": "RMB1284-ADD-PIASICCOO-XX-HS-D-PD00001",
+    "descrizione": "PSC",
+    "expected": "ok"
+  },
+  {
+    "codice": "RMB1284-ADD-RELTECNIC-XX-RT-M-PD00005",
+    "descrizione": "Report di coordinamento (R1 update)",
+    "expected": "ok"
+  },
+  {
+    "codice": "RMB1284-ADD-SPECIFCSP-XX-SM-Z-C00001",
+    "descrizione": "Capitolato Informativo CSP",
+    "expected": "ok"
+  },
+  {
+    "codice": "RMB1284-ADD-SPECIFRIL-XX-SM-Z-S00001",
+    "descrizione": "Specifica Metodologica Rilievi",
+    "expected": "ok"
+  },
+  {
+    "codice": "RMB1284-ADD-SPECIFPRO-XX-SM-Z-P00001",
+    "descrizione": "Specifica Metodologica Progettazione",
+    "expected": "ok"
+  },
+  {
+    "codice": "RMB1284-ADD-PLANLIVEL-04-DR-A-E00099",
+    "descrizione": "Piano 4 in fase Esecutivo (formato 6-char)",
+    "expected": "out-of-catalog"
+  },
+  {
+    "codice": "RMB1284-ADD-RELTECNIC-XX-RT-A-AN00099",
+    "descrizione": "Relazione As Built + Nuove costruzioni (composito)",
+    "expected": "out-of-catalog"
+  },
+  {
+    "codice": "RMB1284-ADD-SPECIFCSP-XX-SM-Z-P00001",
+    "descrizione": "SPECIFCSP con servizio P invece di C",
+    "expected": "warning"
+  },
+  {
+    "codice": "RMB1284-ADD-SPECIFRIL-XX-SM-Z-C00001",
+    "descrizione": "SPECIFRIL con servizio C invece di S",
+    "expected": "warning"
+  },
+  {
+    "codice": "RMB1284-ADM-RM0411001-XX-RT-Z-PD00001",
+    "descrizione": "Codice Agenzia legacy ADM (Vulnerabilità Sismica)",
+    "expected": "warning"
+  },
+  {
+    "codice": "RMB1284-ADD-PIPPOXXXX-XX-RT-Z-PD00001",
+    "descrizione": "Codice documento sconosciuto 9 char",
+    "expected": "warning"
+  },
+  {
+    "codice": "RMB1284-ADD-PLANGENER-XX-RT-Z-PD00001",
+    "descrizione": "PLANGENER (DR atteso) con RT",
+    "expected": "warning"
+  },
+  {
+    "codice": "RMB1284-ADD-ELENCELAB-XX-AM-Z-PD10001",
+    "descrizione": "Fase 1 (di norma 0)",
+    "expected": "warning"
+  },
+  {
+    "codice": "RMB1284-ADD-RELGENERA-XX-RT-Z",
+    "descrizione": "Campo 7 mancante",
+    "expected": "error"
+  },
+  {
+    "codice": "RMB-ADD-RELGENERA-XX-RT-Z-PD00001",
+    "descrizione": "Codice Bene troppo corto",
+    "expected": "error"
+  },
+  {
+    "codice": "RMB1284-ADD-ELEVAZIONI-XX-RT-Z-PD00001",
+    "descrizione": "ELEVAZIONI (10 char) — bug della v0 ora corretto",
+    "expected": "error"
+  },
+  {
+    "codice": "RMB1284-ADD-RELGENERA-XX-RT-9-PD00001",
+    "descrizione": "Disciplina cifra",
+    "expected": "error"
+  },
+  {
+    "codice": "RMB1284-ADD-RELGENERA-XX-RT-Z-PDX0001",
+    "descrizione": "Codice elaborato malformato (lettera in posizione cifra)",
+    "expected": "error"
+  },
+  {
+    "codice": "RMB1284-ADD-RELGENERA-XX-RT-Z-PD001",
+    "descrizione": "Codice elaborato troppo corto",
+    "expected": "error"
+  },
+  {
+    "codice": "RMB1284-ADD-RELGENERA-99-RT-Z-PD00001",
+    "descrizione": "Livello 99 non in tabella",
+    "expected": "warning"
+  },
+  {
+    "codice": "RMB1284-ADD-ELENCELAB-XX-AM-Z-PD00000",
+    "descrizione": "Progressivo 00",
+    "expected": "warning"
+  },
+  {
+    "codice": "RMB1284 -ADD-ELENCELAB-XX-AM-Z-PD00001",
+    "descrizione": "Spazi embedded (dovrebbero essere normalizzati)",
+    "expected": "ok"
+  },
+  {
+    "codice": " RMB1284-ADD-RELGENERA-XX-RT-Z-PD00001 ",
+    "descrizione": "Spazi leading/trailing",
+    "expected": "ok"
+  },
+  {
+    "codice": "rmb1284-add-relgenera-xx-rt-z-pd00001",
+    "descrizione": "Lowercase (deve essere uppercased)",
+    "expected": "ok"
+  },
+  {
+    "codice": "RMB1284-ADD-ELENCELAB-XX-AM-Z-PD00001-EXTRA",
+    "descrizione": "8 parti invece di 7",
+    "expected": "error"
+  }
+]

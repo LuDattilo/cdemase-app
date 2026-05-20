@@ -1,0 +1,43 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # consente di lanciare manualmente dalla UI GitHub
+
+permissions:
+  contents: write  # necessario per pushare su gh-pages
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout sorgente
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Installa dipendenze
+        run: npm ci
+
+      - name: Build statico (GitHub Pages)
+        run: npm run build
+        env:
+          GITHUB_PAGES: "true"
+
+      - name: Aggiungi .nojekyll
+        run: touch out/.nojekyll
+
+      - name: Deploy su gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./out
+          publish_branch: gh-pages
+          force_orphan: true   # mantiene gh-pages pulito (solo build più recente)
+          commit_message: "deploy: ${{ github.event.head_commit.message }}"

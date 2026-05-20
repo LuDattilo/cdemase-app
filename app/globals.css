@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+@theme {
+  /* Palette light professionale (stile PA/Demanio, ottimizzata per embed SharePoint) */
+  --color-mase-bg: #f3f5f9;
+  --color-mase-surface: #ffffff;
+  --color-mase-surface-elevated: #f8fafc;
+  --color-mase-border: #e2e8f0;
+  --color-mase-border-strong: #cbd5e1;
+  --color-mase-text: #0f172a;
+  --color-mase-text-muted: #64748b;
+  --color-mase-text-subtle: #94a3b8;
+  --color-mase-primary: #1e5fcc;
+  --color-mase-primary-hover: #1750ad;
+  --color-mase-primary-soft: rgba(30, 95, 204, 0.08);
+  --color-mase-primary-text: #ffffff;
+  --color-mase-ok: #15803d;
+  --color-mase-ok-soft: rgba(21, 128, 61, 0.1);
+  --color-mase-warn: #b45309;
+  --color-mase-warn-soft: rgba(180, 83, 9, 0.1);
+  --color-mase-err: #b91c1c;
+  --color-mase-err-soft: rgba(185, 28, 28, 0.1);
+  --font-mono: ui-monospace, "JetBrains Mono", "SF Mono", Consolas, monospace;
+}
+
+:root {
+  color-scheme: light;
+}
+
+/* === DARK MODE OVERRIDES === */
+/* Attivato aggiungendo la classe .theme-dark all'elemento <html>.
+   Nota: usiamo una classe (non un data-attribute) perché LightningCSS di Tailwind v4
+   ottimizza via [data-theme="dark"] interpretandolo come marker light-dark().
+   `html.theme-dark` ha specificità maggiore di :root, quindi vince sempre.
+   `!important` non necessario, ma il selettore esplicito su html previene cascadi inattesi. */
+html.theme-dark {
+  --color-mase-bg: #0b1220;
+  --color-mase-surface: #111a2e;
+  --color-mase-surface-elevated: #19243d;
+  --color-mase-border: #25324f;
+  --color-mase-border-strong: #364668;
+  --color-mase-text: #e7ecf5;
+  --color-mase-text-muted: #94a3c4;
+  --color-mase-text-subtle: #6b7a99;
+  --color-mase-primary: #5aa9ff;
+  --color-mase-primary-hover: #7ab8ff;
+  --color-mase-primary-soft: rgba(90, 169, 255, 0.14);
+  --color-mase-primary-text: #001b35;
+  --color-mase-ok: #28d180;
+  --color-mase-ok-soft: rgba(40, 209, 128, 0.14);
+  --color-mase-warn: #ffb547;
+  --color-mase-warn-soft: rgba(255, 181, 71, 0.14);
+  --color-mase-err: #ff6b6b;
+  --color-mase-err-soft: rgba(255, 107, 107, 0.14);
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: var(--color-mase-bg);
+  color: var(--color-mase-text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+/* Eleganza dei controlli base */
+input,
+select,
+textarea,
+button {
+  font-family: inherit;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-mase-primary);
+  outline-offset: 1px;
+}
+
+/* Scrollbar stilizzata */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-mase-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-mase-border-strong);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-mase-text-subtle);
+}
+
+/* Selezione */
+::selection {
+  background: var(--color-mase-primary-soft);
+  color: var(--color-mase-text);
+}
